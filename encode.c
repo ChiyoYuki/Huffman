@@ -170,7 +170,7 @@ void DecodeText(node *root)
     fclose(output);
 }
 
-int main()
+void Encode()
 {
     int i;
     llu num[256] = {0};
@@ -220,7 +220,7 @@ int main()
     {
         if (code[i][0] != '\0')
         {
-            printf("%c的编码为%s\n", i, code[i]);
+            printf("%c%s\n", i, code[i]);
         }
     }
     fclose(output);
@@ -245,6 +245,69 @@ int main()
     freopen("log.txt", "w", stdout);
     printf("压缩率为%.2lf%%", rate);
     fclose(output);
+    return;
+}
+
+void Decode()
+{
+    char dic[256];
+    node *root = NewNode('\0', 0, NULL, NULL, NULL, NULL);
+    node *now = root;
+    node *newNode = root;
+    printf("请输入字典路径：");
+    scanf("%s", dic);
+
+    FILE *input;
+    char ch, text;
+    input = freopen(dic, "r", stdin);
+    while (1)
+    {
+        ch = getchar();
+        if (ch == EOF)
+            break;
+        text = ch;
+        while (1)
+        {
+            ch = getchar();
+            if (ch == '\n')
+            {
+                now->data = text;
+                now = root;
+                break;
+            }
+            else if (ch == '0')
+            {
+                if (now->left == NULL)
+                {
+                    newNode = NewNode('\0', 0, NULL, NULL, NULL, NULL);
+                    now->left = newNode;
+                }
+                now = now->left;
+            }
+            else if (ch == '1')
+            {
+                if (now->right == NULL)
+                {
+                    newNode = NewNode('\0', 0, NULL, NULL, NULL, NULL);
+                    now->right = newNode;
+                }
+                now = now->right;
+            }
+        }
+    }
+    fclose(input);
     DecodeText(root);
+    return;
+}
+
+int main()
+{
+    int type;
+    printf("请输入一个数字（1：编码文件；2：解码文件）\n");
+    scanf("%d", &type);
+    if (type == 1)
+        Encode();
+    else if (type == 2)
+        Decode();
     return 0;
 }
