@@ -140,27 +140,30 @@ void EncodeText(node *nowNode, char *nowCode, char type, int place)
     }
 }
 
-void DecodeText(node * root)
+void DecodeText(node *root)
 {
     char ch;
-    node * now=root;
+    node *now = root;
     FILE *input;
     FILE *output;
     input = freopen("encode.txt", "r", stdin);
     output = freopen("decode.txt", "w", stdout);
-    while(1)
+    while (1)
     {
-        if(now->data!='\0')
+        if (now->data != '\0')
         {
-            printf("%c",now->data);
-            now=root;
+            printf("%c", now->data);
+            now = root;
         }
         else
         {
             ch = getchar();
-            if(ch==EOF) return;
-            else if(ch=='0') now=now->left;
-            else if(ch=='1') now=now->right;
+            if (ch == EOF)
+                return;
+            else if (ch == '0')
+                now = now->left;
+            else if (ch == '1')
+                now = now->right;
         }
     }
     fclose(input);
@@ -241,7 +244,7 @@ int main()
 
     freopen("log.txt", "w", stdout);
     printf("压缩率为%.2lf%%", rate);
-    fclose(output);   
+    fclose(output);
     DecodeText(root);
     return 0;
 }
