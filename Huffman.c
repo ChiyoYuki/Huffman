@@ -238,7 +238,7 @@ void Encode()
     fclose(input);
     fclose(output);
 
-    rate = codeSize / (256.00);
+    rate = codeSize / (8.00);
     rate *= 100.00;
     rate /= textSize;
 
