@@ -73,7 +73,7 @@ int main()
     gettimeofday(&end, 0);
 
     printf("本次排序结束，用时%d.%06d秒\n",end.tv_sec-begin.tv_sec,end.tv_usec-begin.tv_usec);
-    freopen("test.out", "w", stdout);
+    freopen("output.txt", "w", stdout);
     printf("本次排序结束，用时%d.%06d秒\n",end.tv_sec-begin.tv_sec,end.tv_usec-begin.tv_usec);
     printf("%d\n", n);
     for (tail = head->next; tail != head; tail = tail->next)
