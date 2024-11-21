@@ -72,9 +72,10 @@ int main()
     }
     gettimeofday(&end, 0);
 
-    printf("本次排序结束，用时%d.%06d秒\n",end.tv_sec-begin.tv_sec,end.tv_usec-begin.tv_usec);
+    double seconds = (double)(end.tv_sec - begin.tv_sec + 0.000001 * (end.tv_usec - begin.tv_usec));
+    printf("本次排序结束，用时%.6lf秒\n", seconds);
     freopen("output.txt", "w", stdout);
-    printf("本次排序结束，用时%d.%06d秒\n",end.tv_sec-begin.tv_sec,end.tv_usec-begin.tv_usec);
+    printf("本次排序结束，用时%.6lf秒\n", seconds);
     printf("%d\n", n);
     for (tail = head->next; tail != head; tail = tail->next)
         printf("%d ", tail->data);
@@ -178,7 +179,7 @@ void quick_sort(node *head)
         head->next = head->next->next;
         head->next->pre = head;
 
-        if (now->data < mid->data)
+        if (now->data <= mid->data)
         {
             now->pre = head0->pre;
             now->next = head0;
@@ -307,7 +308,10 @@ void insertion_sort(node *head)
         }
     }
 
+    head->pre = new_head->pre;
     head->next = new_head->next;
+    head->pre->next = head;
+    head->next->pre = head;
     free(new_head);
 
     return;
