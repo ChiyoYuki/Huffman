@@ -64,6 +64,7 @@ int main()
         cout<<tree.size()<<'\n';
         for(i=0;i<tree.size();i++)
         {
+            cout<<n<<tree.size()<<'\n';
             cout<<tree[i].first.first<<' ';
             cout<<tree[i].first.second<<' ';
             cout<<tree[i].second<<'\n';
