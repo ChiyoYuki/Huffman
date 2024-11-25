@@ -179,7 +179,7 @@ void quick_sort(node *head)
         head->next = head->next->next;
         head->next->pre = head;
 
-        if (now->data <= mid->data)
+        if (now->data < mid->data)
         {
             now->pre = head0->pre;
             now->next = head0;
