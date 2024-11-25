@@ -51,7 +51,7 @@ int main()
         if (tree[i].first.first > tree[i].first.second)
             swap(tree[i].first.first, tree[i].first.second);
     }
-    sort(tree.begin(),tree.end(),cmp2);
+    sort(tree.begin(), tree.end(), cmp2);
 
     if (tree.size() != n - 1)
     {
@@ -59,15 +59,15 @@ int main()
     }
     else
     {
-        cout<<"最小生成树生成成功\n";
-        freopen("output.txt","w",stdout);
-        cout<<tree.size()<<'\n';
-        for(i=0;i<tree.size();i++)
+        cout << "最小生成树生成成功\n";
+        freopen("output.txt", "w", stdout);
+        cout << tree.size() << '\n';
+        for (i = 0; i < tree.size(); i++)
         {
-            cout<<n<<tree.size()<<'\n';
-            cout<<tree[i].first.first<<' ';
-            cout<<tree[i].first.second<<' ';
-            cout<<tree[i].second<<'\n';
+            cout << n << ' ' << tree.size() << '\n';
+            cout << tree[i].first.first << ' ';
+            cout << tree[i].first.second << ' ';
+            cout << tree[i].second << '\n';
         }
     }
     return 0;
@@ -81,20 +81,14 @@ vector<type_edge> Prim(vector<vector<ll>> matrix, vector<type_edge> edges)
 
     vis[1] = true;
     vector<type_edge> now;
-    type_edge road;
     for (i = 1; i < matrix.size(); i++)
-    {
         if (matrix[1][i] != inf)
-        {
-            road = make_pair(make_pair(1, i), matrix[1][i]);
-            now.push_back(road);
-        }
-    }
+            now.push_back(make_pair(make_pair(1, i), matrix[1][i]));
 
     vector<type_edge> tree;
     while (!now.empty())
     {
-        ll min_len = inf, min_pos;
+        ll min_len = inf, min_pos, new_point;
         for (i = 0; i < now.size(); i++)
         {
             if (now[i].second < min_len)
@@ -104,8 +98,9 @@ vector<type_edge> Prim(vector<vector<ll>> matrix, vector<type_edge> edges)
             }
         }
 
+        new_point = now[min_pos].first.second;
         tree.push_back(now[min_pos]);
-        vis[now[min_pos].first.second] = true;
+        vis[new_point] = true;
 
         i = 0;
         while (i < now.size())
@@ -115,6 +110,10 @@ vector<type_edge> Prim(vector<vector<ll>> matrix, vector<type_edge> edges)
             else
                 i++;
         }
+
+        for (i = 2; i < matrix.size(); i++)
+            if (matrix[new_point][i] != inf && vis[i] == false)
+                now.push_back(make_pair(make_pair(new_point, i), matrix[new_point][i]));
     }
 
     return tree;
@@ -123,12 +122,9 @@ vector<type_edge> Prim(vector<vector<ll>> matrix, vector<type_edge> edges)
 vector<type_edge> Krusal(vector<vector<ll>> matrix, vector<type_edge> edges)
 {
     ll i, j;
-    vector<pair<ll, ll>> dsu(matrix.size());
+    vector<ll> dsu(matrix.size());
     for (i = 0; i < matrix.size(); i++)
-    {
-        dsu[i].first = i;
-        dsu[i].second = i;
-    }
+        dsu[i] = i;
     sort(edges.begin(), edges.end(), cmp1);
 
     vector<type_edge> tree;
@@ -141,18 +137,18 @@ vector<type_edge> Krusal(vector<vector<ll>> matrix, vector<type_edge> edges)
         while (now[0] != root[0])
         {
             now[0] = root[0];
-            root[0] = dsu[root[0]].second;
+            root[0] = dsu[root[0]];
         }
         while (now[1] != root[1])
         {
             now[1] = root[1];
-            root[1] = dsu[root[1]].second;
+            root[1] = dsu[root[1]];
         }
 
         if (root[0] != root[1])
         {
             tree.push_back(edges[i]);
-            root[1] = root[0];
+            dsu[root[1]] = dsu[root[0]];
         }
 
         if (tree.size() == matrix.size() - 2)
